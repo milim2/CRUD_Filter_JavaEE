@@ -66,7 +66,7 @@ public class StudentDAOImplementation implements StudentDAO {
 	
 	//UPDATE 1 Student record
 	@Override
-	public void updateStudent(Student stu) {
+	public void updateStudent (Student stu) {
 		try {
 			String query = 
 					"update students set fname=?, lname=?, city=?, province=?, postalcode=?, gpa=? where studentID=?";
@@ -82,10 +82,10 @@ public class StudentDAOImplementation implements StudentDAO {
 			ps.executeUpdate();
 			ps.close();
 			
-	} catch (SQLException e) {
-		e.printStackTrace();
-	}
-		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}	
 		
 		// List all records
 		// Select all or query all
@@ -97,7 +97,7 @@ public class StudentDAOImplementation implements StudentDAO {
 			try {
 				Statement stmt = conn.createStatement();
 				ResultSet rs = stmt.executeQuery(
-						("select studentID, fname, lanme, city, province, postalcode, CAST(gpa as DECIMAL(4,2)) As gpa from students"));
+						("select studentID, fname, lname, city, province, postalcode, CAST(gpa as DECIMAL(4,2)) As gpa from students"));
 			
 				while(rs.next()) {
 					Student stud = new Student(); // Model (from 1 record)
@@ -120,7 +120,7 @@ public class StudentDAOImplementation implements StudentDAO {
 				e.printStackTrace();
 			}
 			
-			return;
+			return students;
 			
 		}
 		
@@ -142,6 +142,8 @@ public class StudentDAOImplementation implements StudentDAO {
 			
 			while (rs.next()) {
 				
+				Student stu = new Student();
+				
 				stu.setStudentID(rs.getInt("studentID"));
 				stu.setFname(rs.getString("fname"));
 				stu.setLname(rs.getString("lname"));
@@ -158,7 +160,7 @@ public class StudentDAOImplementation implements StudentDAO {
 			e.printStackTrace();
 		}
 		
-		return;
+		return student;
 	}
 	
 	
@@ -201,6 +203,6 @@ public class StudentDAOImplementation implements StudentDAO {
 //	
 	
 	
-}
+//}
 
 }
