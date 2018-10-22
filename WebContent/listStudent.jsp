@@ -28,7 +28,7 @@
 <tbody>
 <c:forEach items="${students}" var="student">
 <tr>
-<td><c:out value="${student.studentID}" /></td>
+<td><c:out value="${student.studentid}" /></td>
 <td><c:out value="${student.fname}" /></td>
 <td><c:out value="${student.lname}" /></td>
 <td><c:out value="${student.city}" /></td>
@@ -36,9 +36,9 @@
 <td><c:out value="${student.postalcode}" /></td>
 <td><c:out value="${student.gpa}" /></td>
 <td> <a
-href="StudentController?action=edit&studentId=<c:out value="${student.studentID}" />">Update</a></td>
+href="StudentController?action=edit&studentId=<c:out value="${student.studentid}" />">Update</a></td>
 <td> <a
-href="StudentController?action=delete&studentId=<c:out value="${student.studentID}" />">Delete</a></td>
+href="StudentController?action=delete&studentId=<c:out value="${student.studentid}" />">Delete</a></td>
 </tr>
 </c:forEach>
 </tbody>

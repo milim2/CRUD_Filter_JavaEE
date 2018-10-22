@@ -26,8 +26,8 @@ public class StudentController extends HttpServlet {
 	
 	public static final String LIST_STUDENT = "/listStudent.jsp"; // for only display
 	public static final String INSERT_OR_EDIT = "/student.jsp";
-	public static final String LIST_STUDENTS_BY_CITY = "/listStudentsByCity.jsp";
-	public static final String LIST_STUDENTS_WITH_GPA = "/listStudentsWithGPA.jsp";
+	public static final String LIST_STUDENTS_BY_CITY = "/listStudentByCity.jsp";
+	public static final String LIST_STUDENTS_WITH_GPA = "/listStudentWithGPA.jsp";
 
 	public StudentController() {
 		dao = new StudentDAOImplementation();
@@ -128,8 +128,10 @@ public class StudentController extends HttpServlet {
 
 		if (studentId == null || studentId.isEmpty())
 			dao.addStudent(student);
+		
 		else {
-			student.setStudentID(Integer.parseInt(studentId));
+			
+			student.setStudentid(Integer.parseInt(studentId));
 			dao.updateStudent(student);
 		}		
 		

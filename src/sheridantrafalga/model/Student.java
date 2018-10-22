@@ -4,7 +4,7 @@ public class Student {
 
 	
 	// POJO class for model
-	private int studentID;
+	private int studentid;
 	private String fname;
 	private String lname;
 	private String city;
@@ -13,12 +13,12 @@ public class Student {
 	private Double gpa;
 	
 		
-	public int getStudentID() {
-		return studentID;
+	public int getStudentid() {
+		return studentid;
 	}
 	
-	public void setStudentID(int studentID) {
-		this.studentID = studentID;
+	public void setStudentid(int studentid) {
+		this.studentid = studentid;
 	}
 	
 	public String getFname() {
@@ -70,7 +70,7 @@ public class Student {
 	}
 	@Override
 	public String toString() {
-		return "Student [studentID=" + studentID + ", fname=" + fname + ", lname=" + lname + ", city=" + city
+		return "Student [studentID=" + studentid + ", fname=" + fname + ", lname=" + lname + ", city=" + city
 				+ ", province=" + province + ", postalcode=" + postalcode + ", gpa=" + gpa + "]";
 	}
 }

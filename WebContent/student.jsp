@@ -12,13 +12,13 @@
 <body>
 	<form action="StudentController" method="post">
 		<fieldset>
-			<!-- <div>
-				<label for="studentID">Student ID</label>
-					<input type="text" name="studentID" 
-						value="<c:out value="${student.studentID }" />" readonly="readonly" />
+			<div>
+				<label for="studentId">Student ID</label>
+					<input type="text" name="studentid" 
+						value="<c:out value="${student.studentid }" />" readonly="readonly" />
 			</div>
 			
-			<div> -->
+			<div>
 				<label for="fname">First Name</label>
 					<input type="text" name="fname" 
 						value="<c:out value="${student.fname }" />"  />

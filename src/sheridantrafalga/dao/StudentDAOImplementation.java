@@ -27,10 +27,10 @@ private Connection conn;
 			PreparedStatement ps = conn.prepareStatement(query);
 			ps.setString(1, stu.getFname());
 			ps.setString(2, stu.getLname());
-			ps.setString(2, stu.getCity());
-			ps.setString(2, stu.getProvince());
-			ps.setString(3, stu.getPostalcode());
-			ps.setDouble(4, stu.getGpa());
+			ps.setString(3, stu.getCity());
+			ps.setString(4, stu.getProvince());
+			ps.setString(5, stu.getPostalcode());
+			ps.setDouble(6, stu.getGpa());
 			ps.executeUpdate();
 			ps.close();
 		} catch (SQLException e) {
@@ -68,7 +68,7 @@ private Connection conn;
 			ps.setString(5, stu.getPostalcode());
 			ps.setDouble(6, stu.getGpa());
 			
-			ps.setInt(7, stu.getStudentID());
+			ps.setInt(7, stu.getStudentid());
 			ps.executeUpdate();
 			ps.close();
 			
@@ -80,6 +80,7 @@ private Connection conn;
 	}
 	
 	// SELECT ALL or QUERY ALL
+	@Override
 	public List<Student> getAllStudents() {
 		
 		List<Student> students = new ArrayList<Student>();
@@ -95,7 +96,8 @@ private Connection conn;
 			
 			while(rs.next()) {
 				Student stu = new Student();
-				stu.setStudentID (rs.getInt("studentID"));
+				
+				stu.setStudentid (rs.getInt("studentID"));
 				stu.setFname (rs.getString("fname"));
 				stu.setLname (rs.getString("lname"));
 				stu.setCity (rs.getString("city"));
@@ -127,8 +129,9 @@ private Connection conn;
 			
 			ps.setInt(1, studentId);
 			ResultSet rs = ps.executeQuery();
+			
 			while(rs.next()) {
-				stu.setStudentID(rs.getInt("studentID"));
+				stu.setStudentid(rs.getInt("studentID"));
 				stu.setFname(rs.getString("fname"));
 				stu.setLname(rs.getString("lname"));
 				stu.setCity (rs.getString("city"));
@@ -140,6 +143,7 @@ private Connection conn;
 			
 			rs.close();
 			ps.close();
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -149,7 +153,7 @@ private Connection conn;
 	}
 	
 	
-	public List<Student> getStudentByProgram(String city) {
+	public List<Student> getStudentByCity (String city) {
 		
 		List<Student> students = new ArrayList<Student>();
 		
@@ -165,7 +169,7 @@ private Connection conn;
 				
 				Student stu = new Student();
 				
-				stu.setStudentID(rs.getInt("studentID"));
+				stu.setStudentid(rs.getInt("studentID"));
 				stu.setFname(rs.getString("fname"));
 				stu.setLname(rs.getString("lname"));
 				stu.setCity (rs.getString("city"));
@@ -186,8 +190,8 @@ private Connection conn;
 		return students;		
 	}
 	
-	
-	public List<Student> getStudentByGPA (double gpa) {
+	@Override
+	public List<Student> getStudentByGpa (double gpa) {
 		
 		List<Student> students = new ArrayList<Student>();
 		
@@ -205,7 +209,7 @@ private Connection conn;
 			while(rs.next()) {
 				Student stu = new Student();
 				
-				stu.setStudentID(rs.getInt("studentID"));
+				stu.setStudentid(rs.getInt("studentID"));
 				stu.setFname(rs.getString("fname"));
 				stu.setLname(rs.getString("lname"));
 				stu.setCity (rs.getString("city"));
