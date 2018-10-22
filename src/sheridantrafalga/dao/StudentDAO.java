@@ -8,8 +8,13 @@ import sheridantrafalga.model.*;
 public interface StudentDAO {
 
 	public void addStudent (Student student);
-	public void deleteStudent (int studentID);
+	public void deleteStudent (int studentId);
 	public void updateStudent (Student student);
+	
 	public List<Student> getAllStudents();
-	public Student getStudentById (int studentID);	
+	public Student getStudentById(int studentId);
+	
+		
+	public List<Student> getStudentByCity (String city);	
+	public List<Student> getStudentByGpa (double gpa);	
 }

@@ -7,20 +7,8 @@
 <meta charset="ISO-8859-1">
 <title>Show All Student data </title>
 
-<style>
-table, th, td {
-     border: 1px solid black;
-     border-collapse: collapse;
-}
-
-th, td {
-     padding: 5px;
-     text-align: left;
-}
-</style>
-
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
 <h2 align="center">All Student's Information</h2>
@@ -48,17 +36,17 @@ th, td {
 <td><c:out value="${student.postalcode}" /></td>
 <td><c:out value="${student.gpa}" /></td>
 <td> <a
-href="StudentController?action=edit&studentID=<c:out value="${student.studentID}" />">Update</a></td>
+href="StudentController?action=edit&studentId=<c:out value="${student.studentID}" />">Update</a></td>
 <td> <a
-href="StudentController?action=delete&studentID=<c:out value="${student.studentID}" />">Delete</a></td>
+href="StudentController?action=delete&studentId=<c:out value="${student.studentID}" />">Delete</a></td>
 </tr>
 </c:forEach>
 </tbody>
 </table>
-
 <p align="center">
-<a href="StudentController?action=insert">To Add Student  </a>
-<a href="search.jsp">Search </a>
+<a href="StudentController?action=insert">Add Student</a>
+<a href="searchStudentsByCity.jsp">Search Students By City</a>
+<a href="searchStudentsWithGPA.jsp">Search Students with GPA</a>
 </p>
 </body>
 </html>

@@ -8,35 +8,43 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import sheridantrafalga.util.DBUtil;
 import sheridantrafalga.model.Student;
+import sheridantrafalga.util.DBUtil;
 
-// To create a new class
 public class StudentDAOImplementation implements StudentDAO {
 
-	private Connection conn;
+	
+private Connection conn;
 	
 	public StudentDAOImplementation() {
 		conn = DBUtil.getConnection();
 	}
 	
-	
-	//ADD 1 record 
-	@Override
 	public void addStudent(Student stu) {
 		
 		try {
-			String query = 
-					"insert into students (studentID, fName, lname, city, province, postalcode, gpa) values (?, ?, ?, ?, ?, ?)";
-			PreparedStatement ps = conn.prepareStatement( query );
+			String query = "insert into students(fname, lname, city, province, postalcode, gpa)values(?,?,?,?,?,?)";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setString(1, stu.getFname());
+			ps.setString(2, stu.getLname());
+			ps.setString(2, stu.getCity());
+			ps.setString(2, stu.getProvince());
+			ps.setString(3, stu.getPostalcode());
+			ps.setDouble(4, stu.getGpa());
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void deleteStudent(int StudentId) {
+		try {
 			
-			ps.setInt( 1, stu.getStudentID());
-			ps.setString( 2, stu.getFname());
-			ps.setString( 3, stu.getLname());
-			ps.setString( 4, stu.getCity());
-			ps.setString( 5, stu.getProvince());
-			ps.setString( 6, stu.getPostalcode());
-			ps.setDouble( 7, stu.getGpa());
+			String query = "delete from students where studentID=?";
+			PreparedStatement ps = conn.prepareStatement(query);
+			ps.setInt(1, StudentId);
 			ps.executeUpdate();
 			ps.close();
 			
@@ -44,17 +52,24 @@ public class StudentDAOImplementation implements StudentDAO {
 			e.printStackTrace();
 		}
 	}
-		
-
 	
-	//DELETE 1 Student record
-	@Override
-	public void deleteStudent(int StudentID) {
+	
+	public void updateStudent(Student stu) {
+		
 		try {
-			String query = "delete from student where studentID=?";
+			
+			String query = "UPDATE students SET fname=?, lname=?, city=?, province=?, postalcode=?, gpa=? WHERE studentID=?";
+			
 			PreparedStatement ps = conn.prepareStatement(query);
-			ps.setInt(1, StudentID);
-			ps.executeUpdate();		
+			ps.setString(1, stu.getFname());
+			ps.setString(2, stu.getLname());
+			ps.setString(3, stu.getCity());
+			ps.setString(4, stu.getProvince());
+			ps.setString(5, stu.getPostalcode());
+			ps.setDouble(6, stu.getGpa());
+			
+			ps.setInt(7, stu.getStudentID());
+			ps.executeUpdate();
 			ps.close();
 			
 		} catch (SQLException e) {
@@ -64,145 +79,149 @@ public class StudentDAOImplementation implements StudentDAO {
 		
 	}
 	
-	//UPDATE 1 Student record
-	@Override
-	public void updateStudent (Student stu) {
-		try {
-			String query = 
-					"update students set fname=?, lname=?, city=?, province=?, postalcode=?, gpa=? where studentID=?";
-			PreparedStatement ps = conn.prepareStatement(query);
-
-			ps.setString( 1, stu.getFname());
-			ps.setString( 2, stu.getLname());
-			ps.setString( 3, stu.getCity());
-			ps.setString( 4, stu.getProvince());
-			ps.setString( 5, stu.getPostalcode());
-			ps.setDouble( 6, stu.getGpa());
-			ps.setDouble( 7, stu.getStudentID());
-			ps.executeUpdate();
-			ps.close();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}	
+	// SELECT ALL or QUERY ALL
+	public List<Student> getAllStudents() {
 		
-		// List all records
-		// Select all or query all
-		@Override
-		public List<Student> getAllStudents() {
+		List<Student> students = new ArrayList<Student>();
+		
+		try {
 			
-			List<Student> students = new ArrayList<Student>();
+			Statement stmt = conn.createStatement();
+			// select CAST(gpa as DECIMAL(3, 2)) AS gpa from student;
+			// ResultSet rs = stmt.executeQuery("select * from student");
 			
-			try {
-				Statement stmt = conn.createStatement();
-				ResultSet rs = stmt.executeQuery(
-						("select studentID, fname, lname, city, province, postalcode, CAST(gpa as DECIMAL(4,2)) As gpa from students"));
+			ResultSet rs = stmt.executeQuery(
+			("select studentID, fname, lname, city, province, postalcode, CAST(gpa as DECIMAL(3, 2)) As gpa from students"));
 			
-				while(rs.next()) {
-					Student stud = new Student(); // Model (from 1 record)
-					
-					stud.setStudentID(rs.getInt("studentID"));
-					stud.setFname(rs.getString("fname"));
-					stud.setLname(rs.getString("lname"));
-					stud.setCity(rs.getString("city"));
-					stud.setProvince(rs.getString("province"));
-					stud.setPostalcode(rs.getString("postalcode"));
-					stud.setGpa(rs.getDouble("gpa"));
-					
-					students.add(stud);
-					
-				}
-				rs.close();
-				stmt.close();
+			while(rs.next()) {
+				Student stu = new Student();
+				stu.setStudentID (rs.getInt("studentID"));
+				stu.setFname (rs.getString("fname"));
+				stu.setLname (rs.getString("lname"));
+				stu.setCity (rs.getString("city"));
+				stu.setProvince (rs.getString("province"));
+				stu.setPostalcode (rs.getString("postalcode"));
+				stu.setGpa (rs.getDouble("gpa"));
 				
-			} catch (SQLException e) {
-				e.printStackTrace();
+				students.add(stu);
+			}
+			rs.close();
+			stmt.close();
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		return students;		
+	}
+	
+	
+	public Student getStudentById(int studentId) {
+		
+		Student stu = new Student();
+		try {
+			
+			String query = "select * from students where studentID=?";
+			PreparedStatement ps = conn.prepareStatement(query);
+			
+			ps.setInt(1, studentId);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				stu.setStudentID(rs.getInt("studentID"));
+				stu.setFname(rs.getString("fname"));
+				stu.setLname(rs.getString("lname"));
+				stu.setCity (rs.getString("city"));
+				stu.setProvince (rs.getString("province"));
+				stu.setPostalcode (rs.getString("postalcode"));
+				stu.setGpa(rs.getDouble("gpa"));
+				
 			}
 			
-			return students;
-			
+			rs.close();
+			ps.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 		
-	
-	//LIST 1 SPECIFIC RECORD
-	@Override
-	public Student getStudentById(int studentid) {
+		return stu;
 		
-		Student student = new Student();
+	}
+	
+	
+	public List<Student> getStudentByProgram(String city) {
+		
+		List<Student> students = new ArrayList<Student>();
+		
 		try {
 			
-			String query =
-					"select * from students where studentID=?";
-			
+			String query = "select * from students where city=?";
 			PreparedStatement ps = conn.prepareStatement(query);
 			
-			ps.setInt(1,  studentid);
+			ps.setString(1, city);
 			ResultSet rs = ps.executeQuery();
-			
-			while (rs.next()) {
+						
+			while(rs.next()) {
 				
 				Student stu = new Student();
 				
 				stu.setStudentID(rs.getInt("studentID"));
 				stu.setFname(rs.getString("fname"));
 				stu.setLname(rs.getString("lname"));
-				stu.setCity(rs.getString("city"));
-				stu.setProvince(rs.getString("province"));
-				stu.setPostalcode(rs.getString("postalcode"));
+				stu.setCity (rs.getString("city"));
+				stu.setProvince (rs.getString("province"));
+				stu.setPostalcode (rs.getString("postalcode"));
 				stu.setGpa(rs.getDouble("gpa"));
+				
+				students.add(stu);
 			}
-			
 			rs.close();
-			ps.close();
+			// stmt.close();
 			
-		} catch (SQLException e) {
-			e.printStackTrace();
 		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}		
 		
-		return student;
+		return students;		
 	}
 	
 	
-	
-//public List<Student> getStudentByGPA(double gpa) {
-//		
-//		List<Student> students = new ArrayList<Student>();
-//		try {
-//			
-//			String query =
-//					"select * from students where GPA=?";
-//			
-//			PreparedStatement ps = conn.prepareStatement(query);
-//			
-//			ps.setDouble(1,  gpa);
-//			ResultSet rs = ps.executeQuery();
-//			
-//			while (rs.next()) {
-//				Student stud = new Student();
-//				
-//				stud.setStudentID(rs.getInt("studentID"));
-//				stud.setFname(rs.getString("FirstName"));
-//				stud.setLname(rs.getString("LastName"));
-//				stud.setCity(rs.getString("City"));
-//				stud.setProvince(rs.getString("Province"));
-//				stud.setPostalcode(rs.getString("Postalcode"));
-//				stud.setGpa(rs.getDouble("GPA"));
-//				
-//				students.add(stud);
-//			}
-//			
-//			rs.close();
-//			
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//		
-//		return students;
-//	}
-//	
-	
-	
-//}
-
+	public List<Student> getStudentByGPA (double gpa) {
+		
+		List<Student> students = new ArrayList<Student>();
+		
+		try {
+			
+			//Convert JAVA double to MySQL decimal datatype
+			//CAST(gpa as DECIMAL(3,2)) AS gpa
+			
+			String query = "select * from students where gpa=?";
+			PreparedStatement ps = conn.prepareStatement(query);
+			
+			ps.setDouble(1, gpa);		
+			ResultSet rs = ps.executeQuery();
+			
+			while(rs.next()) {
+				Student stu = new Student();
+				
+				stu.setStudentID(rs.getInt("studentID"));
+				stu.setFname(rs.getString("fname"));
+				stu.setLname(rs.getString("lname"));
+				stu.setCity (rs.getString("city"));
+				stu.setProvince (rs.getString("province"));
+				stu.setPostalcode (rs.getString("postalcode"));
+				stu.setGpa(rs.getDouble("gpa"));
+				
+				students.add(stu);
+			}
+			rs.close();
+			
+		}
+		catch (SQLException e) {
+			e.printStackTrace();
+		}		
+		
+		return students;		
+	}
 }

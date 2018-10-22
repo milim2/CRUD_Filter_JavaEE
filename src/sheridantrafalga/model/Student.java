@@ -12,21 +12,7 @@ public class Student {
 	private String postalcode;
 	private Double gpa;
 	
-	
-//	public Student(int studentID, String fname, String lname, String city, String province, String postalcode,
-//			Double gpa) {
-//		super();
-//		this.studentID = studentID;
-//		this.fname = fname;
-//		this.lname = lname;
-//		this.city = city;
-//		this.province = province;
-//		this.postalcode = postalcode;
-//		this.gpa = gpa;
-//	}
-//	
-	
-	
+		
 	public int getStudentID() {
 		return studentID;
 	}
